@@ -1,0 +1,139 @@
+# 🛠️ UZSTĀDĪŠANAS INSTRUKCIJA — AptiekasMap
+# Laravel + Vue 3 + Vuetify 3 + MySQL
+
+=====================================================
+  SOLIS 1 — Instalē nepieciešamās programmas
+=====================================================
+
+1. PHP 8.2+
+   → https://windows.php.net/download/
+   → Lejupielādē "VS16 x64 Non Thread Safe" ZIP
+   → Izpako uz C:\php
+   → Pievieno C:\php sistēmas PATH mainīgajam
+   → Pārbaudi: php -v
+
+2. Composer
+   → https://getcomposer.org/Composer-Setup.exe
+   → Instalē, norādi C:\php\php.exe
+   → Pārbaudi: composer -V
+
+3. Node.js 18+ (LTS)
+   → https://nodejs.org
+   → Pārbaudi: node -v  un  npm -v
+
+4. XAMPP (Apache + MySQL)
+   → https://www.apachefriends.org
+   → Palaid XAMPP Control Panel
+   → Ieslēdz Apache un MySQL
+
+=====================================================
+  SOLIS 2 — Izveido datubāzi
+=====================================================
+
+1. Atver http://localhost/phpmyadmin
+2. Nospied "Jaunā datubāze" (vai "New")
+3. Nosaukums: aptiekas_db
+4. Salīdzināšana: utf8mb4_unicode_ci
+5. Nospied "Izveidot"
+
+=====================================================
+  SOLIS 3 — Uzstādi Backend (Laravel)
+=====================================================
+
+Atver PowerShell vai CMD:
+
+  cd C:\xampp\htdocs
+  composer create-project laravel/laravel backend
+  cd backend
+
+Nokopē šos failus no mapes "backend/" uz Laravel projektu:
+  - routes/api.php
+  - app/Http/Controllers/*.php
+  - app/Models/*.php
+  - database/seeders/DatabaseSeeder.php
+  - .env.example → pārsauc uz .env
+
+Konfigurē .env:
+  DB_CONNECTION=mysql
+  DB_HOST=127.0.0.1
+  DB_PORT=3306
+  DB_DATABASE=aptiekas_db
+  DB_USERNAME=root
+  DB_PASSWORD=
+
+Palaid migrācijas (izveido tabulas + testa datus):
+
+  php artisan key:generate
+  php artisan migrate:fresh --seed
+
+Palaid Laravel serveri:
+
+  php artisan serve
+  → Backend darbojas uz http://localhost:8000
+
+Iespējo CORS (config/cors.php):
+  'paths' => ['api/*'],
+  'allowed_origins' => ['http://localhost:5173'],
+
+=====================================================
+  SOLIS 4 — Uzstādi Frontend (Vue + Vuetify)
+=====================================================
+
+Jaunā terminālī:
+
+  cd C:\xampp\htdocs
+  mkdir frontend && cd frontend
+
+Nokopē šos failus no mapes "frontend/":
+  - package.json
+  - vite.config.js
+  - index.html
+  - src/main.js
+  - src/App.vue
+  - src/views/HomeView.vue
+  - src/views/PharmaciesView.vue
+
+Instalē npm paketes:
+
+  npm install
+
+Palaid frontend:
+
+  npm run dev
+  → Frontend darbojas uz http://localhost:5173
+
+=====================================================
+  SOLIS 5 — Izveido GitHub repozitoriju
+=====================================================
+
+1. Ej uz https://github.com → "New repository"
+2. Nosaukums: aptiekasmap
+3. Apraksts: Zāļu pieejamības platforma Latvijas aptiekās
+4. Nospied "Create repository"
+
+Terminālī (projekta mapē):
+
+  git init
+  git add .
+  git commit -m "Initial commit — AptiekasMap"
+  git branch -M main
+  git remote add origin https://github.com/TAVS_USERNAME/aptiekasmap.git
+  git push -u origin main
+
+README.md jau ir gatavs — tas parādīsies automātiski GitHub lapā!
+
+=====================================================
+  SOLIS 6 — Pārbaudi
+=====================================================
+
+✅ http://localhost:8000/api/medicines  → JSON saraksts
+✅ http://localhost:8000/api/pharmacies → JSON saraksts
+✅ http://localhost:5173               → Vue mājaslapa
+
+=====================================================
+  Testa lietotāji (pēc --seed)
+=====================================================
+
+  Admin:   admin@aptiekasmap.lv  / admin123
+  Lietotājs: janis@gmail.com    / user123
+  Aptieka: benu@benu.lv         / pharm123
