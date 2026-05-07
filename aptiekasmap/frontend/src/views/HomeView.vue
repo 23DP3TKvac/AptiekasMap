@@ -384,13 +384,7 @@ const contactSuccess    = ref(false)
 onMounted(async () => {
   try {
     const { data } = await axios.get('/api/medicines')
-    // Enrich with availability summary
-    medicines.value = data.map(m => ({
-      ...m,
-      status: 'available',
-      minPrice: '—',
-      pharmacyCount: 0,
-    }))
+    medicines.value = data
   } catch {
     error.value = 'API nav pieejams'
     medicines.value = demoMedicines
@@ -430,10 +424,19 @@ function clearFilters() {
 
 // ── Hero search ──────────────────────────────────────────────
 function quickSearch(term) {
+  // Save to history if logged in
+  const token = localStorage.getItem("token")
+  if (token) {
+    axios.post("/api/user/history", { medicine_name: term }).catch(() => {})
+  }
   searchQuery.value = term
   document.getElementById('search-section')?.scrollIntoView({ behavior: 'smooth' })
 }
 function doHeroSearch() {
+  const token = localStorage.getItem("token")
+  if (token && heroQuery.value.trim()) {
+    axios.post("/api/user/history", { medicine_name: heroQuery.value.trim() }).catch(() => {})
+  }
   if (heroQuery.value.trim()) quickSearch(heroQuery.value.trim())
 }
 
@@ -507,3 +510,6 @@ function submitContact() {
 .med-card:hover { transform: translateY(-4px); }
 .cursor-pointer { cursor: pointer; }
 </style>
+<script>
+// patch: save search to history
+</script>

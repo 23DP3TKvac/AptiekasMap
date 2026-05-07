@@ -10,48 +10,39 @@ import '@mdi/font/css/materialdesignicons.css'
 import App from './App.vue'
 import HomeView from './views/HomeView.vue'
 import PharmaciesView from './views/PharmaciesView.vue'
+import ProfileView from './views/ProfileView.vue'
 
-// ── Vuetify theme ──────────────────────────────────────────
 const vuetify = createVuetify({
   components,
   directives,
   theme: {
-    defaultTheme: 'light',
+    defaultTheme: 'dark',
     themes: {
       light: {
         colors: {
-          primary:    '#16a34a',
-          secondary:  '#0f172a',
-          accent:     '#22c55e',
-          error:      '#dc2626',
-          background: '#f8fafc',
-          surface:    '#ffffff',
+          primary: '#16a34a', secondary: '#0f172a', accent: '#22c55e',
+          error: '#dc2626', background: '#f8fafc', surface: '#ffffff',
         },
       },
       dark: {
         colors: {
-          primary:    '#22c55e',
-          secondary:  '#1e293b',
-          accent:     '#4ade80',
-          error:      '#f87171',
-          background: '#0f172a',
-          surface:    '#1e293b',
+          primary: '#22c55e', secondary: '#1e293b', accent: '#4ade80',
+          error: '#f87171', background: '#0f172a', surface: '#1e293b',
         },
       },
     },
   },
 })
 
-// ── Router ─────────────────────────────────────────────────
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/',           component: HomeView,       name: 'home' },
     { path: '/pharmacies', component: PharmaciesView, name: 'pharmacies' },
+    { path: '/profile',    component: ProfileView,    name: 'profile' },
   ],
 })
 
-// ── App ────────────────────────────────────────────────────
 const app = createApp(App)
 app.use(createPinia())
 app.use(vuetify)

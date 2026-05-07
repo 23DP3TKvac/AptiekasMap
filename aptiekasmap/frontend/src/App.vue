@@ -18,7 +18,10 @@
              variant="text" color="white" @click="toggleTheme" />
 
       <!-- Login dialog -->
-      <v-btn color="primary" variant="flat" rounded="lg" class="mr-3" @click="loginDialog = true">
+      <v-btn v-if="isLoggedIn" color="primary" variant="flat" rounded="lg" class="mr-3" to="/profile">
+        <v-icon start>mdi-account</v-icon> Profils
+      </v-btn>
+      <v-btn v-else color="primary" variant="flat" rounded="lg" class="mr-3" @click="loginDialog = true">
         Pieslēgties
       </v-btn>
 
@@ -153,6 +156,7 @@ async function handleRegister() {
 }
 
 // Restore token on reload
+const isLoggedIn = ref(!!localStorage.getItem("token"))
 const savedToken = localStorage.getItem('token')
 if (savedToken) axios.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`
 </script>
