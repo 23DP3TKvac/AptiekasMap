@@ -20,6 +20,7 @@ Route::get('/medicines/{id}',    [MedicineController::class, 'show']);
 Route::get('/pharmacies',        [PharmacyController::class, 'index']);
 Route::get('/pharmacies/{id}',   [PharmacyController::class, 'show']);
 
+Route::get('/statistics', [App\Http\Controllers\StatisticsController::class, 'index']);
 Route::get('/availability/{medicine_id}', [AvailabilityController::class, 'byMedicine']);
 
 // Protected routes

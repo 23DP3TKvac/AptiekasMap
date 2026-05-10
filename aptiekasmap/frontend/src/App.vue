@@ -10,6 +10,7 @@
       <v-btn variant="text" color="white" to="/">Sākums</v-btn>
       <v-btn variant="text" color="white" to="/pharmacies">Aptiekas</v-btn>
       <v-btn variant="text" color="white" href="#search-section">Meklēt</v-btn>
+      <v-btn variant="text" color="white" to="/statistics">Statistika</v-btn>
       <v-btn variant="text" color="white" to="/admin">Admin</v-btn>
 
       <v-spacer />

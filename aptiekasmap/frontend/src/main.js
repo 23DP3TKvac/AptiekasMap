@@ -11,6 +11,7 @@ import App from './App.vue'
 import HomeView from './views/HomeView.vue'
 import PharmaciesView from './views/PharmaciesView.vue'
 import ProfileView from './views/ProfileView.vue'
+import StatisticsView from './views/StatisticsView.vue'
 import AdminView from './views/AdminView.vue'
 
 const vuetify = createVuetify({
@@ -30,6 +31,7 @@ const router = createRouter({
     { path: '/',           component: HomeView,       name: 'home' },
     { path: '/pharmacies', component: PharmaciesView, name: 'pharmacies' },
     { path: '/profile',    component: ProfileView,    name: 'profile' },
+    { path: '/statistics', component: StatisticsView, name: 'statistics' },
     { path: '/admin',      component: AdminView,      name: 'admin' },
   ],
 })
