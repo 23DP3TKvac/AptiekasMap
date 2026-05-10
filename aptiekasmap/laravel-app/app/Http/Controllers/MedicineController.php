@@ -11,40 +11,24 @@ class MedicineController extends Controller
     {
         $query = Medicine::with('availabilities');
 
-        // Filter by name
         if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->name . '%')
+            $query->where(function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->name . '%')
                   ->orWhere('active_substance', 'like', '%' . $request->name . '%');
+            });
         }
-
-        // Filter by form (tabletes, kapsulas, etc.)
-        if ($request->filled('form')) {
-            $query->where('form', $request->form);
-        }
-
-        // Filter by manufacturer
-        if ($request->filled('manufacturer')) {
-            $query->where('manufacturer', 'like', '%' . $request->manufacturer . '%');
-        }
+        if ($request->filled('form'))         $query->where('form', $request->form);
+        if ($request->filled('manufacturer')) $query->where('manufacturer', 'like', '%' . $request->manufacturer . '%');
 
         $medicines = $query->get();
 
         return response()->json($medicines->map(function ($m) use ($request) {
             $available = $m->availabilities->where('status', 'available');
+            if ($request->filled('price_min')) $available = $available->where('price', '>=', $request->price_min);
+            if ($request->filled('price_max')) $available = $available->where('price', '<=', $request->price_max);
 
-            // Filter by price range
-            if ($request->filled('price_min')) {
-                $available = $available->where('price', '>=', $request->price_min);
-            }
-            if ($request->filled('price_max')) {
-                $available = $available->where('price', '<=', $request->price_max);
-            }
-
-            // Filter by status
             $status = $available->count() > 0 ? 'available' : 'unavailable';
-            if ($request->filled('status') && $request->status !== $status) {
-                return null;
-            }
+            if ($request->filled('status') && $request->status !== $status) return null;
 
             return [
                 'id'               => $m->id,
@@ -65,20 +49,54 @@ class MedicineController extends Controller
     {
         $q = $request->query('q', '');
         return response()->json(Medicine::where('name', 'like', "%{$q}%")
-            ->orWhere('active_substance', 'like', "%{$q}%")
-            ->get());
-    }
-
-    public function show($id)
-    {
-        return response()->json(
-            Medicine::with(['availabilities.pharmacy'])->findOrFail($id)
-        );
+            ->orWhere('active_substance', 'like', "%{$q}%")->get());
     }
 
     public function forms()
     {
-        $forms = Medicine::distinct()->pluck('form');
-        return response()->json($forms);
+        return response()->json(Medicine::distinct()->pluck('form'));
+    }
+
+    public function show($id)
+    {
+        return response()->json(Medicine::with(['availabilities.pharmacy'])->findOrFail($id));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name'             => 'required|string|max:100',
+            'active_substance' => 'required|string|max:100',
+            'form'             => 'required|string|max:50',
+            'dose'             => 'required|string|max:50',
+            'manufacturer'     => 'required|string|max:100',
+            'description'      => 'nullable|string',
+        ]);
+
+        $medicine = Medicine::create($request->all());
+        return response()->json($medicine, 201);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $medicine = Medicine::findOrFail($id);
+        $request->validate([
+            'name'             => 'required|string|max:100',
+            'active_substance' => 'required|string|max:100',
+            'form'             => 'required|string|max:50',
+            'dose'             => 'required|string|max:50',
+            'manufacturer'     => 'required|string|max:100',
+            'description'      => 'nullable|string',
+        ]);
+
+        $medicine->update($request->all());
+        return response()->json($medicine);
+    }
+
+    public function destroy($id)
+    {
+        $medicine = Medicine::findOrFail($id);
+        $medicine->delete();
+        return response()->json(['message' => 'Zāles dzēstas veiksmīgi.']);
     }
 }
