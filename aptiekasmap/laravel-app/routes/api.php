@@ -14,6 +14,7 @@ Route::post('/auth/login',    [AuthController::class, 'login']);
 
 Route::get('/medicines',              [MedicineController::class, 'index']);
 Route::get('/medicines/search',       [MedicineController::class, 'search']);
+Route::get('/medicines/forms', [MedicineController::class, 'forms']);
 Route::get('/medicines/{id}',         [MedicineController::class, 'show']);
 
 Route::get('/pharmacies',             [PharmacyController::class, 'index']);
