@@ -45,6 +45,9 @@ router.beforeEach((to, from, next) => {
   }
 })
 
+import axios from 'axios'
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || ''
+
 const app = createApp(App)
 app.use(createPinia())
 app.use(vuetify)
