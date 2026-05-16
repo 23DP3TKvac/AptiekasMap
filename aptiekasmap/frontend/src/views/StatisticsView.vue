@@ -142,6 +142,43 @@
         </v-col>
       </v-row>
     </div>
+
+     <!-- USERS TABLE -->
+     <v-row class="mt-8">
+      <v-col cols="12">
+        <v-card rounded="xl" elevation="2" class="pa-4">
+          <div class="text-subtitle-1 font-weight-bold mb-4">
+            <v-icon color="primary" class="mr-2">mdi-account-group</v-icon>
+            Reģistrētie lietotāji
+          </div>
+          <v-table density="compact">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Vārds</th>
+                <th>E-pasts</th>
+                <th>Loma</th>
+                <th>Reģistrēts</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="u in users" :key="u.id">
+                <td>{{ u.id }}</td>
+                <td class="font-weight-bold">{{ u.name }}</td>
+                <td>{{ u.email }}</td>
+                <td>
+                  <v-chip :color="u.role === 'admin' ? 'error' : u.role === 'pharmacy_rep' ? 'warning' : 'primary'"
+                    size="x-small" variant="tonal">{{ u.role }}</v-chip>
+                </td>
+                <td class="text-caption text-medium-emphasis">
+                  {{ new Date(u.created_at).toLocaleDateString('lv-LV') }}
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
