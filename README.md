@@ -2,10 +2,9 @@
 
 > Tīmekļa platforma zāļu pieejamības noteikšanai tuvākajās aptiekās
 
-**Autors:** Timurs Kvačovs  
-**Skola:** Rīgas Valsts Tehnikums — Datorikas nodaļa  
-**Modulis:** Datu bāzu programmēšana  
-**Mācību gads:** 2025/2026
+** Timurs Kvačovs  
+** Rīgas Valsts Tehnikums — Datorikas nodaļa  
+** 2025/2026
 
 ---
 
@@ -59,53 +58,6 @@ Latvijā nav vienotas platformas, kas apvienotu dažādu aptieku datus vienā vi
 ## 🗄️ Datubāze (MySQL 8.0)
 
 6 tabulas: `users`, `medicines`, `pharmacies`, `availability`, `search_history`, `notifications`
-
----
-
-## 👤 Testa lietotāji
-
-| Loma | E-pasts | Parole |
-|------|---------|--------|
-| Admin | admin@aptiekasmap.lv | admin123 |
-| Lietotājs | janis@gmail.com | user123 |
-| Aptieka | benu@benu.lv | pharm123 |
-
----
-
-## 📁 Projekta struktūra
----
-
-## ⚙️ Lokālā palaišana (GitHub Codespaces)
-
-### Katru reizi atverot Codespaces:
-
-```bash
-# 1. MySQL
-sudo pkill -9 mysqld 2>/dev/null; sleep 1
-sudo mkdir -p /var/run/mysqld && sudo chown mysql:mysql /var/run/mysqld
-sudo mysqld_safe --user=mysql --skip-syslog &
-sleep 5
-
-# 2. Backend (Terminal 1)
-cd aptiekasmap/backend
-php artisan serve --host=0.0.0.0 --port=8001
-
-# 3. Frontend (Terminal 2)
-cd aptiekasmap/frontend
-npm run dev
-```
-
-### Pirmreizēja uzstādīšana:
-
-```bash
-# MySQL datubāze
-sudo mysql -u root -e "CREATE DATABASE aptiekas_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; CREATE USER 'aptiekas'@'localhost' IDENTIFIED BY 'secret123'; GRANT ALL PRIVILEGES ON aptiekas_db.* TO 'aptiekas'@'localhost'; FLUSH PRIVILEGES;"
-
-# Backend
-cd aptiekasmap/backend
-php artisan key:generate
-php artisan migrate:fresh --seed
-```
 
 ---
 
