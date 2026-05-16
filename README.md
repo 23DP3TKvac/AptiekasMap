@@ -138,9 +138,3 @@ Frontend: `http://localhost:5173`
 | POST | `/api/auth/register` | Reģistrācija |
 | POST | `/api/auth/login` | Pieslēgšanās |
 | GET | `/api/user/history` | Meklēšanas vēsture |
-
----
-
-## 📄 Licence
-
-MIT © 2025 Timurs Kvačovs
