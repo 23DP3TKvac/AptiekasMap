@@ -4,7 +4,7 @@ import axios from 'axios'
 
 export const useAuthStore = defineStore('auth', () => {
   const token      = ref(localStorage.getItem('token') || '')
-  const isAdmin    = ref(false)
+  const isAdmin    = ref(localStorage.getItem('role') === 'admin')
   const isLoggedIn = ref(!!localStorage.getItem('token'))
 
   async function login(tokenValue, role) {
@@ -12,6 +12,7 @@ export const useAuthStore = defineStore('auth', () => {
     isLoggedIn.value = true
     isAdmin.value    = role === 'admin'
     localStorage.setItem('token', tokenValue)
+    localStorage.setItem('role', role || 'user')
     axios.defaults.headers.common['Authorization'] = `Bearer ${tokenValue}`
   }
 
@@ -20,6 +21,7 @@ export const useAuthStore = defineStore('auth', () => {
     isLoggedIn.value = false
     isAdmin.value    = false
     localStorage.removeItem('token')
+    localStorage.removeItem('role')
     delete axios.defaults.headers.common['Authorization']
   }
 
