@@ -551,7 +551,13 @@ async function openAvailability(med) {
   }
 
   try {
-    const query = encodeURIComponent(med.active_substance || med.name)
+    const raw = (med.active_substance || med.name)
+      .replace(/ā/g,'a').replace(/č/g,'c').replace(/ē/g,'e')
+      .replace(/ģ/g,'g').replace(/ī/g,'i').replace(/ķ/g,'k')
+      .replace(/ļ/g,'l').replace(/ņ/g,'n').replace(/š/g,'s')
+      .replace(/ū/g,'u').replace(/ž/g,'z')
+      .replace(/s$/i,'')
+    const query = encodeURIComponent(raw)
     const res = await fetch(`https://api.fda.gov/drug/label.json?search=active_ingredient:${query}&limit=1`)
     const data = await res.json()
     if (data.results?.[0]) {
