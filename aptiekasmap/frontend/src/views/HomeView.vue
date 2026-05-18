@@ -303,8 +303,17 @@
             Nav pieejamības datu
           </div>
           <v-list v-else lines="two">
-            <v-list-item v-for="a in availability" :key="a.id" :subtitle="a.pharmacy?.address">
-              <template #title><span class="font-weight-bold">{{ a.pharmacy?.name }}</span></template>
+            <v-list-item v-for="a in availability" :key="a.id">
+              <template #title>
+                <span class="font-weight-bold">{{ a.pharmacy?.name }}</span>
+              </template>
+              <template #subtitle>
+                <a :href="`https://maps.google.com/?q=${encodeURIComponent(a.pharmacy?.address)}`"
+                    target="_blank" class="text-primary text-decoration-none">
+                  <v-icon size="12" class="mr-1">mdi-map-marker</v-icon>
+                  {{ a.pharmacy?.address }}
+                </a>
+              </template>
               <template #append>
                 <div class="text-right">
                   <div class="text-primary font-weight-bold" style="font-family:'Sora',sans-serif">€{{ a.price }}</div>
