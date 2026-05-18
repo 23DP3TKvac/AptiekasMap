@@ -116,33 +116,26 @@ const open   = [true, true, true, true, false]
 
 async function loadOsmPharmacies() {
   try {
-    const query = `
-      [out:json][timeout:25];
-      node["amenity"="pharmacy"](56.85,24.00,57.10,24.25);
-      out body 12;
-    `
-    const res = await fetch('https://overpass-api.de/api/interpreter', {
-      method: 'POST',
-      body: query,
-    })
-    const data = await res.json()
     const osmHours = ['9:00–21:00','8:00–22:00','9:00–20:00','8:30–20:00','10:00–20:00','9:00–18:00']
     const osmPhones = ['+37167001234','+37167002345','+37167003456','+37167004567','+37167005678','+37167006789']
 
-    osmPharmacies.value = data.elements
-  .filter(e => e.tags?.name)
-  .map((e, i) => ({
-    name:    e.tags.name || 'Aptieka',
-    address: e.tags['addr:street']
-      ? `${e.tags['addr:street']} ${e.tags['addr:housenumber'] || ''}, Rīga`
-      : 'Rīga',
-    lat:   e.lat,
-    lon:   e.lon,
-    phone: e.tags.phone || osmPhones[i % osmPhones.length],
-    hours: e.tags.opening_hours || osmHours[i % osmHours.length],
-    }))
+    const res = await fetch(
+      'https://nominatim.openstreetmap.org/search?q=aptieka+r%C4%ABga&format=json&limit=12&addressdetails=1',
+      { headers: { 'Accept-Language': 'lv' } }
+    )
+    const data = await res.json()
+    osmPharmacies.value = data
+      .filter(p => p.display_name)
+      .map((p, i) => ({
+        name: p.name || p.display_name.split(',')[0],
+        address: p.display_name.split(',').slice(0, 3).join(','),
+        lat: parseFloat(p.lat),
+        lon: parseFloat(p.lon),
+        phone: osmPhones[i % osmPhones.length],
+        hours: osmHours[i % osmHours.length],
+      }))
   } catch {
-    osmError.value = 'Nevarēja ielādēt OpenStreetMap datus. Pārbaudi interneta savienojumu.'
+    osmError.value = 'Nevarēja ielādēt OpenStreetMap datus.'
   } finally {
     osmLoading.value = false
   }
