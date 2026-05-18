@@ -36,7 +36,7 @@ Latvijā nav vienotas platformas, kas apvienotu dažādu aptieku datus vienā vi
 | Backend | Laravel 11 (PHP 8.4) |
 | Datubāze | MySQL 8.0 |
 | Autentifikācija | Laravel Sanctum (bcrypt) |
-| Ārējais API | OpenStreetMap Nominatim |
+| Ārējais API | Wikipedia Latvian API |
 | Frontend hosting | Vercel |
 | Backend hosting | Railway.app |
 
@@ -48,10 +48,9 @@ Latvijā nav vienotas platformas, kas apvienotu dažādu aptieku datus vienā vi
 - 🎛️ Paplašinātā filtrēšana pēc 6 kritērijiem vienlaikus
 - 📍 Tuvākās aptiekas ar Google Maps saiti
 - 💰 Cenu salīdzināšana pa aptiekām
-- 🗺️ Reālās aptiekas no OpenStreetMap Nominatim API
+- 🗺️ Zāļu apraksts ar Wikipedia api palidzību
 - ❤️ Favorītu saraksts reģistrētiem lietotājiem
 - 📦 Zāļu komplekti — izveidot un pārvaldīt savus komplektus
-- 🛵 Pasūtīt uz mājām (drīzumā)
 - 👤 Lietotāju reģistrācija ar lomu pārvaldību (admin/user/pharmacy_rep)
 - 🔐 Aizsargāti maršruti
 - 🛠️ Administrācijas panelis — CRUD zāļu pārvaldībai (tikai admin)
