@@ -7,11 +7,10 @@
         <span class="logo-name">AptiekasMap</span>
       </v-app-bar-title>
 
-      <v-btn variant="text" color="white" to="/">Sākums</v-btn>
-      <v-btn variant="text" color="white" to="/pharmacies">Aptiekas</v-btn>
-      <v-btn variant="text" color="white" href="#search-section">Meklēt</v-btn>
-      <v-btn v-if="isAdmin" variant="text" color="white" to="/statistics">Statistika</v-btn>
-      <v-btn v-if="isAdmin" variant="text" color="white" to="/admin">Admin</v-btn>
+      <v-btn class="d-none d-md-flex" variant="text" color="white" to="/">Sākums</v-btn>
+      <v-btn class="d-none d-md-flex" variant="text" color="white" to="/pharmacies">Aptiekas</v-btn>
+      <v-btn v-if="isAdmin" class="d-none d-md-flex" variant="text" color="white" to="/statistics">Statistika</v-btn>
+      <v-btn v-if="isAdmin" class="d-none d-md-flex" variant="text" color="white" to="/admin">Admin</v-btn>
 
       <v-spacer />
 
@@ -20,10 +19,10 @@
              variant="text" color="white" @click="toggleTheme" />
 
       <!-- Login dialog -->
-      <v-btn v-if="isLoggedIn" color="primary" variant="flat" rounded="lg" class="mr-3" to="/profile">
+      <v-btn v-if="isLoggedIn" color="primary" variant="flat" rounded="lg" class="mr-3 d-none d-md-flex" to="/profile">
         <v-icon start>mdi-account</v-icon> Profils
       </v-btn>
-      <v-btn v-else color="primary" variant="flat" rounded="lg" class="mr-3" @click="loginDialog = true">
+      <v-btn v-else color="primary" variant="flat" rounded="lg" class="mr-3 d-none d-md-flex" @click="loginDialog = true">
         Pieslēgties
       </v-btn>
 
