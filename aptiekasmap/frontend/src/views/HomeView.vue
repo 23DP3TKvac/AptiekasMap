@@ -317,10 +317,20 @@
           </v-list>
         </v-card-text>
         <v-card-actions class="px-6 pb-4">
-          <v-spacer /><v-btn variant="text" @click="availDialog = false">Aizvērt</v-btn>
+          <v-btn v-if="isLoggedIn" color="primary" variant="tonal" rounded="lg" 
+            prepend-icon="mdi-moped" @click="orderSnack = true">
+            Pasūtīt uz mājām
+          </v-btn>
+          <v-spacer />
+          <v-btn variant="text" @click="availDialog = false">Aizvērt</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-snackbar v-model="orderSnack" color="info" timeout="3000" rounded="lg">
+      <v-icon start>mdi-information</v-icon>
+      Funkcija drīzumā būs pieejama!
+    </v-snackbar>
   </div>
 </template>
 
@@ -415,6 +425,7 @@ const loading          = ref(true)
 const error            = ref('')
 const heroQuery        = ref('')
 const availDialog      = ref(false)
+const orderSnack       = ref(false)
 const availLoading     = ref(false)
 const availability     = ref([])
 const selectedMed      = ref(null)
