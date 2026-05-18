@@ -35,5 +35,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/favorites', [App\Http\Controllers\FavoriteController::class, 'index']);
     Route::post('/user/favorites', [App\Http\Controllers\FavoriteController::class, 'store']);
     Route::delete('/user/favorites/{medicine_id}', [App\Http\Controllers\FavoriteController::class, 'destroy']);
+    Route::get('/user/sets', [App\Http\Controllers\MedicineSetController::class, 'index']);
+    Route::post('/user/sets', [App\Http\Controllers\MedicineSetController::class, 'store']);
+    Route::post('/user/sets/{set_id}/medicines', [App\Http\Controllers\MedicineSetController::class, 'addMedicine']);
+    Route::delete('/user/sets/{set_id}/medicines/{medicine_id}', [App\Http\Controllers\MedicineSetController::class, 'removeMedicine']);
+    Route::delete('/user/sets/{set_id}', [App\Http\Controllers\MedicineSetController::class, 'destroy']);
     Route::get('/admin/users',       [AuthController::class, 'users']);
 });
