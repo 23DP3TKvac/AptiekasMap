@@ -8,13 +8,15 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('favorites', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('medicine_id')->constrained()->onDelete('cascade');
-            $table->timestamps();
-            $table->unique(['user_id', 'medicine_id']);
-        });
+        if (!Schema::hasTable('favorites')) {
+            Schema::create('favorites', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->constrained()->onDelete('cascade');
+                $table->foreignId('medicine_id')->constrained()->onDelete('cascade');
+                $table->timestamps();
+                $table->unique(['user_id', 'medicine_id']);
+            });
+        }
     }
 
     public function down(): void
