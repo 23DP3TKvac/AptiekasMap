@@ -200,13 +200,18 @@
                 </span>
               </div>
             </v-card-text>
-            <v-card-actions class="px-4 pb-4">
-              <v-btn color="primary" variant="tonal" rounded="lg" block @click="openAvailability(med)">
-                Skatīt aptiekas <v-icon end>mdi-arrow-right</v-icon>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
+          <v-card-actions class="px-4 pb-4">
+            <v-btn color="primary" variant="tonal" rounded="lg" class="flex-grow-1" @click="openAvailability(med)">
+              Skatīt aptiekas <v-icon end>mdi-arrow-right</v-icon>
+            </v-btn>
+            <v-btn v-if="isLoggedIn" :color="isFavorite(med.id) ? 'error' : 'default'"
+              :variant="isFavorite(med.id) ? 'flat' : 'outlined'"
+              icon rounded="lg" @click="toggleFavorite(med.id)">
+              <v-icon>{{ isFavorite(med.id) ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
 
         <v-col v-if="filteredMedicines.length === 0 && !loading" cols="12" class="text-center py-12">
           <v-icon size="64" color="medium-emphasis">mdi-pill-off</v-icon>
@@ -305,8 +310,42 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-const isLoggedIn = computed(() => !!localStorage.getItem('token'))
 import axios from 'axios'
+const isLoggedIn = computed(() => !!localStorage.getItem('token'))
+const favorites = ref([])
+
+async function loadFavorites() {
+  if (!isLoggedIn.value) return
+  try {
+    const token = localStorage.getItem('token')
+    const { data } = await axios.get('/api/user/favorites', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    favorites.value = data.map(f => f.id)
+  } catch {}
+}
+
+function isFavorite(medicineId) {
+  return favorites.value.includes(medicineId)
+}
+
+async function toggleFavorite(medicineId) {
+  if (!isLoggedIn.value) return
+  const token = localStorage.getItem('token')
+  if (isFavorite(medicineId)) {
+    await axios.delete(`/api/user/favorites/${medicineId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    favorites.value = favorites.value.filter(id => id !== medicineId)
+  } else {
+    await axios.post('/api/user/favorites', { medicine_id: medicineId }, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    favorites.value.push(medicineId)
+  }
+}
+
+
 
 const popularTags = ['Paracetamol', 'Ibuprofen', 'Amoxicillin', 'Loratadīns']
 const stats = [
@@ -434,6 +473,7 @@ function submitContact() {
 }
 
 onMounted(async () => {
+  loadFavorites()
   try {
     const [medsRes, formsRes] = await Promise.all([
       axios.get('/api/medicines'),
